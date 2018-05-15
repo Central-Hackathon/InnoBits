@@ -1,0 +1,115 @@
+﻿@model WebApp.Models.ViewModel.ViewLayout
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/plugins/Layouts/style.css" rel="stylesheet" />
+<section class="content-header">
+    <h1>
+        Επεξεργασία Layout
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-dashboard"></i> Αρχική</a></li>
+        <li class="active">Επεξεργασία Layout</li>
+    </ol>
+</section>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Devlayout.dvLtAutoId)
+    @Html.HiddenFor(model => model.inputCount)
+    @Html.HiddenFor(model => model.virtualCount)
+    @Html.HiddenFor(model => model.outputCount)
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"></h3>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="dvLtName">Name</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Devlayout.dvLtName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Devlayout.dvLtName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="dvLtVersion">Version</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Devlayout.dvLtVersion, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Devlayout.dvLtVersion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="dvLtDescription">Description</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Devlayout.dvLtDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Devlayout.dvLtDescription, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="dvLtLastUpdate">LastUpdate</label>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Devlayout.dvLtLastUpdate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Devlayout.dvLtLastUpdate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    @Html.ActionLink("Πίσω", "Index", null, new { @class = "btn btn-default" })
+                                    <input type="submit" value="Save" class="btn btn-info pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" id="layoutediv">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Σχεδιασμός Layout</h3>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div id="content">
+                                <div id="sidebar">
+                                    <div id="image" class="element ui-widget-content" style="top:20px;">
+                                        <img src="~/plugins/Layouts/image.png" />
+                                    </div>
+                                    <div id="slider" class="element ui-widget-content" style="top:140px;">
+                                        <img src="~/plugins/Layouts/slider.png" />
+                                    </div>
+                                    <div id="text" class="element ui-widget-content" style="top:260px;">
+                                        <img src="~/plugins/Layouts/text.png" />
+                                    </div>
+                                    <div id="iframe" class="element ui-widget-content" style="top:380px;">
+                                        <img src="~/plugins/Layouts/iframe.png" />
+                                    </div>
+                                    <div id="slider" class="element ui-widget-content" style="top:380px;">
+                                        <img src="~/plugins/Layouts/browser2.png" />
+                                    </div>
+                                    <div id="twitter" class="element ui-widget-content" style="top:380px;">
+                                        <img src="~/plugins/Layouts/twitter.png" />
+                                    </div>
+                                </div>
+                                <div id="wrapper" class="droppable ui-widget-header">
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.result)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/plugins/Layouts/custom.js"></script>
+}

@@ -1,0 +1,66 @@
+﻿@model WebApp.Alerts
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Alerts</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Message)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Message)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.dateInstert)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.dateInstert)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.color)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.color)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.size)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.size)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.DevLayout.dvLtName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.DevLayout.dvLtName)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

@@ -1,0 +1,120 @@
+﻿@model WebApp.Devices
+@{
+    ViewBag.Title = "monitoring";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.HiddenFor(model => model.devAutoId)
+@Html.HiddenFor(model => model.devApi)
+@Html.HiddenFor(model => model.devApiKey)
+<section class="content-header">
+    <h1>
+        Layouts
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-dashboard"></i> Αρχική</a></li>
+        <li class="active">Layouts</li>
+    </ol>
+</section>
+<div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-lg-3 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>Θερμ/σία</h3>
+                                    <h3><span class="label label-success" id="temp">0</span><sup style="font-size: 20px">C</sup></h3>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-wifi"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>Υγρασία</h3>
+                                    <h3><span class="label label-success" id="hum">0</span><sup style="font-size: 20px">%</sup></h3>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-wifi"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-xs-12">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>Απόσταση</h3>
+                                    <h3><span class="label label-success" id="prox">0</span><sup style="font-size: 20px"></sup></h3>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-wifi"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xs-12">
+
+                        </div>
+                    </div>
+                    @*<div class="row">
+                            <div class="col-lg-3 col-xs-12">
+                                <input id="39" type="checkbox" name="gender" value="male"> RED<br>
+                                <input id="38" type="checkbox" name="gender" value="male"> YELLOW<br>
+                                <input id="37" type="checkbox" name="gender" value="male"> GREEN<br>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var myVar = setInterval(myTimer, 1500);
+        var devid = document.getElementById('devAutoId').value;
+
+        function myTimer() {           
+            $.ajax({
+                type: 'GET',
+                cache: false,
+                url: '/api/getioval/' + devid,
+                success: function (data) {
+                    var GuIo = data.split('#');
+                    var GetGuIO;
+                    var name;
+                    var val;
+                    for (i = 0; i < GuIo.length; i++) {
+                        GetGuIO = GuIo[i].split('=');
+                        name = GetGuIO[0];
+                        val = GetGuIO[1];
+                        switch (name) {
+                            case 'proximity':
+                                $("#prox").text(val);
+                                break;
+                            case 'temperature':
+                                $("#temp").text(val);
+                                break;
+                            case 'humidity':
+                                $("#hum").text(val);
+                                break;
+                        }
+
+                    }
+
+                    //alert(GuIo[0]);
+                },
+                fail: function (data) {
+                    $("#pan").text('Error');
+                }
+            });
+        }
+    </script>
+}

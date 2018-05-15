@@ -1,0 +1,167 @@
+﻿@model WebApp.Devices
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>view</title>
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #292f33;
+        }
+
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            width: 403px;
+        }
+
+        #lowerleft {
+            margin-left: 1px;
+            width: 100%;
+            height: 50px;
+            color: white;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+    <body>
+        @Html.HiddenFor(model => model.DevLayout.dvLtVersion)
+        @Html.HiddenFor(model => model.DevLayout.dvLtAutoId)
+        @Html.HiddenFor(model => model.devAutoId)
+        <div>
+            @Html.Raw(ViewBag.HtmlStr)
+        </div>
+        @*<div>
+                <a class="twitter-timeline" href="https://twitter.com/hashtag/BillkasTest" data-widget-id="987063703492231168">#BillkasTest Tweets</a>
+                <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
+            </div>*@
+        @*<div>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLqd4FxKcI2LtQCjjN1S1xrO8NakhJLFKd&rel=0&amp;controls=0&amp;showinfo=0&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>*@
+        @*<div>
+                <a href="https://www.accuweather.com/el/gr/xanthi/181757/weather-forecast/181757" class="aw-widget-legal">
+                </a><div id="awcc1524481968114" class="aw-widget-current" data-locationkey="181757" data-unit="c" data-language="el" data-useip="false" data-uid="awcc1524481968114"></div>
+                <script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
+            </div>*@
+        @*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" id="lalala">
+                    <div class="item active">
+                        <img src="~/img/1.jpg" alt="Los Angeles" style="width:100%;">
+                    </div>
+                    <div class="item">
+                        <img src="~/img/2.jpg" alt="Los Angeles" style="width:100%;">
+                    </div>
+                    <div class="item">
+                        <img src="~/img/3.jpg" alt="Los Angeles" style="width:100%;">
+                    </div>
+                </div>
+            </div>*@
+
+        <div id="lowerleft">
+            <marquee id="alertdata" behavior="scroll" direction="left"></marquee>
+        </div>
+
+        <script>
+            var myVar;
+            var id;
+            var ver;
+            var devid;
+            $(document).ready(function () {
+                ver = document.getElementById('DevLayout_dvLtVersion').value;
+                id = document.getElementById('DevLayout_dvLtAutoId').value;
+                devid = document.getElementById('devAutoId').value;
+                myVar = setInterval(myTimer, 2000);
+
+                //myTimer();
+
+                //var div = document.createElement('div');
+                //div.className = 'item';
+                //div.innerHTML = '<img src="/img/3.jpg" alt="Los Angeles" style="width:100%;">';
+                //document.getElementById('lalala').appendChild(div);
+
+            });
+
+            function addRow() {
+                var div = document.createElement('div');
+                div.className = 'row';
+                div.innerHTML =
+                    '<input type="text" name="name" value="" />\
+                    <input type="text" name="value" value="" />\
+                    <label> <input type="checkbox" name="check" value="1" /> Checked? </label>\
+                    <input type="button" value="-" onclick="removeRow(this)">';
+
+                document.getElementById('content').appendChild(div);
+            }
+
+            function removeRow(input) {
+                document.getElementById('content').removeChild(input.parentNode);
+            }
+
+
+
+
+            function myTimer() {
+                $.ajax({
+                    type: 'GET',
+                    cache: false,
+                    url: '/api/LayouteVer/' + devid,
+                    success: function (data) {
+                        var res = data.split("#");
+                        if (res[0] != id || res[1] != ver) {
+                            location.reload();
+                        }
+                    },
+                    fail: function (data) {
+
+                    }
+                });
+
+                $.ajax({
+                    type: 'GET',
+                    cache: false,
+                    url: '/api/Alerts?id=' + id + '&devid=' + devid,
+                    success: function (data) {
+                        document.getElementById("alertdata").innerHTML = data;
+                    },
+                    fail: function (data) {
+
+                    }
+                });
+
+                $.ajax({
+                    type: 'GET',
+                    cache: false,
+                    url: '/Layouts/gettemp?devid=' + devid,
+                    success: function (data) {
+                        if (document.getElementById('down') != null && document.getElementById('up') != null) {
+                            if (parseInt(data) > 30) {
+                                document.getElementById("down").style.display = "none";
+                                document.getElementById("up").style.display = "block";
+                            }
+                            else {
+                                document.getElementById("down").style.display = "block";
+                                document.getElementById("up").style.display = "none";
+                            }
+                        }
+                    },
+                    fail: function (data) {
+
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
